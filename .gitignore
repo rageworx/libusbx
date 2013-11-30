@@ -45,3 +45,5 @@ Release
 *.patch
 *~
 *.orig
+*.opensdf
+*.sdf
