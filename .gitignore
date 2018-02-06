@@ -5,6 +5,7 @@ Makefile.in
 *.la
 *.lo
 *.o
+lib
 libtool
 ltmain.sh
 missing
@@ -45,3 +46,4 @@ Release
 *.patch
 *~
 *.orig
+obj

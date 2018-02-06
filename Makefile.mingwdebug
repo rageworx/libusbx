@@ -1,0 +1,71 @@
+# Makefile for libusbx for MinGW-W64
+# (C)2016, 2017 Raphael Kim / rageworx
+#
+# ------------------------------------------------------------------------------
+CCPATH =
+
+# Compiler configure.
+GCC = ${CCPATH}gcc
+GPP = ${CCPATH}g++
+AR  = ${CCPATH}ar
+
+SRCDIR    = ./libusb
+PLTDIR    = ./mingw-w64
+OBJDIR    = ./obj/Debug
+OUTDIR    = ./lib
+OUTBIN    = libusbxd.a
+
+DEFINEOPT = -DDEBUG
+OPTIMIZEOPT = -g -mwindows
+
+USRLOCALDIR = /usr/local
+
+CFLAGS    = -I./include
+CFLAGS   += -I$(SRCDIR)
+CFLAGS   += -I$(SRCDIR)/os
+CFLAGS   += -I$(PLTDIR)
+# CFLAGS   += -I$(USRLOCALDIR)/include
+CFLAGS   += $(DEFINEOPT) $(OPTIMIZEOPT)
+
+# LFLAGS   += -L/usr/local/lib
+
+# sources required :
+# core, descriptor, hotplug, io, poll_windows, strerror, sync, threads_windows, windows_usb 
+
+SRCS  = $(SRCDIR)/core.c
+SRCS += $(SRCDIR)/descriptor.c
+SRCS += $(SRCDIR)/hotplug.c
+SRCS += $(SRCDIR)/io.c
+SRCS += $(SRCDIR)/strerror.c
+SRCS += $(SRCDIR)/sync.c
+
+OSSRCS  = $(SRCDIR)/os/poll_windows.c
+OSSRCS += $(SRCDIR)/os/threads_windows.c
+OSSRCS += $(SRCDIR)/os/windows_usb.c
+
+OBJS   = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+OSOBJS = $(OSSRCS:$(SRCDIR)/os/%.c=$(OBJDIR)/%.o)
+
+all: prepare clean ${OUTDIR}/${OUTBIN}
+
+prepare:
+	@mkdir -p ${OBJDIR}
+	@mkdir -p ${OUTDIR}
+
+$(OBJS): $(OBJDIR)/%.o: $(SRCDIR)/%.c
+	@echo "Building $@ ... "
+	@$(GCC) $(CFLAGS) $(LFLAGS) -c $< -o $@
+
+$(OSOBJS): $(OBJDIR)/%.o: $(SRCDIR)/os/%.c
+	@echo "Building $@ ... "
+	@$(GCC) $(CFLAGS) $(LFLAGS) -c $< -o $@	
+	
+$(OUTDIR)/$(OUTBIN): $(OBJS) $(OSOBJS)
+	@echo "Generating $@ ..."
+	@$(AR) -q $@ $(OBJDIR)/*.o
+	@cp -rf $(SRCDIR)/libusb.h $(OUTDIR)
+	@echo "done."
+
+clean:
+	@rm -rf ${OBJDIR}/*
+	@rm -rf ${OUTDIR}/${OUTBIN}
