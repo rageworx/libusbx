@@ -1,27 +1,33 @@
 libusbx MinGW-W64 forked
 ========================
+
  * libusbx author : JoshBlake
+ * This project is a forked project from Josh Blake's repository(https://github.com/JoshBlake/libusbx ) and customized to build it for MinGW-W64 users.
+ * Changes from JoshBlake's libusbx,
+     - Removed android and mac supports.
+     - Building with MinGW-W64 with M-SYS.
 
- - This project is a forked project from Josh Blake's repository
-   (https://github.com/JoshBlake/libusbx ) and customized to build it for
-   MinGW-W64 users.
- - Removed android and mac supports.
-
- - Building with MinGW-W64 with M-SYS.
-
+      ```
       Release: make -f Makefile.mingw
       Debug:   make -f Makefile.mingwdebug
+	  ```
 
- - Library out : lib/libusbx(d).a
+     - Library out : lib/libusbx(d).a
+     - Installing is not recommended but it should be done with this.
 
- - Installing is not recommended but it should be done with this.
-
+      ```
       make -f Makefile.mingw install
+      ```
 
- - Uninstalling
+     - Uninstalling
 
+      ```
       make -f Makefile.mingw uninstall
+      ```
 
+### Original README
+
+```
 libusbx
 =======
 
@@ -51,3 +57,4 @@ http://mailing-list.libusbx.org
 - Ludovic Rousseau <ludovic.rousseau@gmail.com>
 - Nathan Hjelm <hjelmn@users.sourceforge.net>
 (Please use the mailing list rather than mailing developers directly)
+```
